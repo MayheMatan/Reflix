@@ -5,7 +5,7 @@ const movieDetail = props => {
     return (
         <div className="movie-detail">
             <h1>{props.movie.title} ({props.movie.year})</h1>
-            <Movie movie={props.movie}/>
+            <Movie remove={props.remove} rent={props.rent} movie={props.movie}/>
             <p>{props.movie.descrShort}</p>
         </div>
     )

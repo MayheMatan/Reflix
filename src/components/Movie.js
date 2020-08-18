@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 
-const movie = props => {
+const Movie = props => {
     
     const clickedHandler = () => {
         if(props.clicked) {
@@ -27,4 +27,4 @@ const movie = props => {
     )
 }
 
-export default movie;
+export default Movie;

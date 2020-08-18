@@ -1,54 +1,51 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Movie from './Movie'
 
-class Catalog extends React.Component {
-    state = {
-        userInput: "",
-    }
+const Catalog = props => {
+    const [userInput, setUserInput] = useState("");
 
-    componentDidMount() {
-        const currentUserName = this.props.match.params.user;        
+    useEffect(() => {
+        const currentUserName = props.match.params.user;        
         localStorage.setItem("currentUser", currentUserName);
-        this.props.retriveInfoAboutUser(currentUserName)
+        props.retriveInfoAboutUser(currentUserName)
+    }, [])
+
+    const inputChangeHandler = ({target}) => {
+        setUserInput(target.value)
     }
 
-    inputChangeHandler = event => {
-        this.setState({userInput: event.target.value})
+    const movieClickHandler = movieId => {
+        props.history.push("/movies/" + movieId);
     }
 
-    movieClickHandler = movieId => {
-        this.props.history.push("/movies/" + movieId);
-    }
-
-    render() {
-        let rented = null;
-        if(this.props.state.rented.length) {
-            rented = (
-                <React.Fragment>
-                    <h5>Rented:</h5>
-                    <div className="square-container">
-                        {this.props.state.rented
-                            .filter(movie => movie.title.toLowerCase().includes(this.state.userInput))
-                            .map(movie => <Movie remove={this.props.remove} rent={this.props.rent} clicked={this.movieClickHandler} key={movie.id} movie={movie}/>)}
-                    </div>
-                    <hr />
-                </React.Fragment>
-            )
-        }
-        return (
-            <div className="catalog">
-                <input value={this.state.userInput} placeholder="Search" onChange={this.inputChangeHandler} />
-                <p>Budget: ${this.props.state.budget}</p>
-                {rented}
-                <h5>Catalog:</h5>
+    let rented = null;
+    if(props.state.rented.length) {
+        rented = (
+            <React.Fragment>
+                <h5>Rented:</h5>
                 <div className="square-container">
-                    {this.props.state.movies
-                        .filter(movie => movie.title.toLowerCase().includes(this.state.userInput))
-                        .map(movie => <Movie remove={this.props.remove} rent={this.props.rent} clicked={this.movieClickHandler} key={movie.id} movie={movie}/>)}
+                    {props.state.rented
+                        .filter(movie => movie.title.toLowerCase().includes(userInput))
+                        .map(movie => <Movie remove={props.remove} rent={props.rent} clicked={movieClickHandler} key={movie.id} movie={movie}/>)}
                 </div>
-            </div>
+                <hr />
+            </React.Fragment>
         )
     }
+
+    return (
+        <div className="catalog">
+            <input value={userInput} placeholder="Search" onChange={inputChangeHandler} />
+            <p>Budget: ${props.state.budget}</p>
+            {rented}
+            <h5>Catalog:</h5>
+            <div className="square-container">
+                {props.state.movies
+                    .filter(movie => movie.title.toLowerCase().includes(userInput))
+                    .map(movie => <Movie remove={props.remove} rent={props.rent} clicked={movieClickHandler} key={movie.id} movie={movie}/>)}
+            </div>
+        </div>
+    )
 }
 
 export default Catalog

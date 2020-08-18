@@ -107,3 +107,9 @@ button:focus {
 .fa-minus-circle {
   z-index: 2;
 }
+
+@media only screen and (max-width: 600px) {
+  .square-container {
+    grid-template-columns: 1fr;
+  }
+}
